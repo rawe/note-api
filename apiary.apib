@@ -1,9 +1,11 @@
 HOST: http://localhost
 
---- Note API V0.1 ---
+--- Note API V0.2 ---
 ---
 Welcome to the our Note API documentation. All comments can be written in (support [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax)
 ---
+
+API-Version: 0.2
 
 -- 
 User Resources 
@@ -11,14 +13,14 @@ Everthing you need to retrieve a user token.
 
 -- 
 Creates a new user.
-POST /api/user
+POST /api/{api-version}/user
 { "username": "mustermann", "password": "secret"}
 < 200
 < Content-Type: application/json
 { "token": "dfsgrg-456456dfgf-45646"}
 
 Retrieve a user token
-GET /api/user/{username}/{password}
+GET /api/{api-version}/user/{username}/{password}
 < 200
 < Content-Type: application/json
 { "token": "dfsgrg-456456dfgf-45646"}
@@ -28,11 +30,11 @@ GET /api/user/{username}/{password}
 Note Resources
 The following is a section of resources related o the notes.
 
-To manage the notes a user token is required.
+Authentifiaktion will be handled later
 
 --
 Save a new note.
-POST /api/note/user/{user-token}
+POST /api/{api-version}/user/{username}/note
 > Content-Type: application/json
 { "text": "My first note ...", "type": "text-note"}
 < 200
@@ -41,7 +43,7 @@ POST /api/note/user/{user-token}
 
 
 Edit a note.
-PUT /api/note/{id}/user/{user-token}
+PUT /api/{api-version}/user/{username}/note/{id}
 > Content-Type: application/json
 < 200
 < Content-Type: application/json
@@ -49,14 +51,19 @@ PUT /api/note/{id}/user/{user-token}
 
 
 Delete a note.
-DELETE /api/note/{id}/user/{user-token}
+DELETE /api/{api-version}/user/{username}/note/{id}
 > Content-Type: application/json
 < 200
 < Content-Type: application/json
 
 
 List all notes for the user.
-GET /api/note/user/{user-token}/{?query, sort}
+
+* *query* - A query to select only some notes by an equal criteria.
+* *sort* - Defining an order.
+* *fields* - Limit the transfered fields to minimize the payload.
+
+GET /api/{api-version}/user/{username}/note/{?query, sort, fields}
 < 200
 < Content-Type: application/json
 { "items": [
